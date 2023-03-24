@@ -21,7 +21,9 @@ final class CategoryHandler implements ErrorHandler
 
         $underlyingException = $error->getPrevious();
 
-        $category = match($underlyingException::class) {
+        $class = $underlyingException !== null ? $underlyingException::class : null;
+
+        $category = match($class) {
             AuthenticationException::class => 'authentication',
             AuthorizationException::class => 'authorization',
             RateLimitException::class => 'rate-limit',
