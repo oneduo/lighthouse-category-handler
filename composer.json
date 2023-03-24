@@ -1,41 +1,48 @@
 {
-    "name": "oneduo/lighthouse-category-handler",
-    "description": "Adds the missing category handler that was removed from Lighthouse 6.0",
-    "keywords": [
-        "laravel",
-        "lighthouse",
-        "missing",
-        "category",
-        "extension"
-    ],
-    "homepage": "https://github.com/oneduo/lighthouse-category-handler",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Charaf Rezrazi",
-            "email": "charaf@rezrazi.fr"
-        },
-        {
-            "name": "Mikaël Popowicz",
-            "email": "mikael@popowicz.fr"
-        }
-    ],
-    "require": {
-        "php": "^8.0",
-        "nuwave/lighthouse": "^6.0"
+  "name": "oneduo/lighthouse-category-handler",
+  "description": "Adds the missing category handler that was removed from Lighthouse 6.0",
+  "keywords": [
+    "laravel",
+    "lighthouse",
+    "missing",
+    "category",
+    "extension"
+  ],
+  "homepage": "https://github.com/oneduo/lighthouse-category-handler",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Charaf Rezrazi",
+      "email": "charaf@rezrazi.fr"
     },
-    "autoload": {
-        "psr-4": {
-            "Oneduo\\LighthouseCategoryHandler\\": "src/"
-        }
-    },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "phpstan/extension-installer": true
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    {
+      "name": "Mikaël Popowicz",
+      "email": "mikael@popowicz.fr"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "nuwave/lighthouse": "^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Oneduo\\LighthouseCategoryHandler\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Oneduo\\LighthouseCategoryHandler\\Testing\\TestingServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "phpstan/extension-installer": true
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
