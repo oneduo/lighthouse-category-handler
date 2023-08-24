@@ -10,8 +10,9 @@ use Nuwave\Lighthouse\Exceptions\AuthorizationException;
 use Nuwave\Lighthouse\Exceptions\RateLimitException;
 use Nuwave\Lighthouse\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Execution\ErrorHandler;
+use Oneduo\LighthouseCategoryHandler\Contracts\CategoryAware;
 
-final class CategoryHandler implements ErrorHandler
+class CategoryHandler implements ErrorHandler
 {
     public function __invoke(?Error $error, \Closure $next): ?array
     {
@@ -19,31 +20,31 @@ final class CategoryHandler implements ErrorHandler
             return $next(null);
         }
 
-        $underlyingException = $error->getPrevious();
+        $previous = $error->getPrevious();
 
-        $class = $underlyingException !== null ? $underlyingException::class : null;
+        $class = $previous !== null ? $previous::class : null;
 
         $category = match($class) {
             AuthenticationException::class => 'authentication',
             AuthorizationException::class => 'authorization',
             RateLimitException::class => 'rate-limit',
             ValidationException::class => 'validation',
-            default => 'graphql',
+            default => $previous instanceof CategoryAware ? $previous->category() : 'graphql',
         };
 
-        $newError = new Error(
-            $error->getMessage(),
-            $error->getNodes(),
-            $error->getSource(),
-            $error->getPositions(),
-            $error->getPath(),
-            $error->getPrevious(),
-            [
-                'category' => $category,
-                ...($error->getExtensions() ?? []),
-            ],
+        return $next(
+            new Error(
+                $error->getMessage(),
+                $error->getNodes(),
+                $error->getSource(),
+                $error->getPositions(),
+                $error->getPath(),
+                $error->getPrevious(),
+                [
+                    'category' => $category,
+                    ...($error->getExtensions() ?? []),
+                ],
+            )
         );
-
-        return $next($newError);
     }
 }
