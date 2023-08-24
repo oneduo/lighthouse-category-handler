@@ -32,19 +32,19 @@ class CategoryHandler implements ErrorHandler
             default => $previous instanceof CategoryAware ? $previous->category() : 'graphql',
         };
 
-        $error = new Error(
-            $error->getMessage(),
-            $error->getNodes(),
-            $error->getSource(),
-            $error->getPositions(),
-            $error->getPath(),
-            $error->getPrevious(),
-            [
-                'category' => $category,
-                ...($error->getExtensions() ?? []),
-            ],
+        return $next(
+            new Error(
+                $error->getMessage(),
+                $error->getNodes(),
+                $error->getSource(),
+                $error->getPositions(),
+                $error->getPath(),
+                $error->getPrevious(),
+                [
+                    'category' => $category,
+                    ...($error->getExtensions() ?? []),
+                ],
+            )
         );
-
-        return $next($error);
     }
 }
